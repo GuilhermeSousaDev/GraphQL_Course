@@ -6,20 +6,29 @@ const db = [
         name: 'Paulo',
         email: 'paulo@gmail.com',
         fixPhoneNumber: 77999887766,
+        profile: 1,
     },
     {
         id: 2,
         name: 'Diego',
         email: 'diego@gmail.com',
         fixPhoneNumber: 77999554433,
+        profile: 2,
     },
     {
-        id: 1,
+        id: 3,
         name: 'Iago',
         email: 'iago@gmail.com',
         fixPhoneNumber: 77999776655,
+        profile: 3,
     }
 ];
+
+const profiles = [
+    { id: 1, description: 'ADMIN' },
+    { id: 2, description: 'NORMAL' },
+    { id: 3, description: 'EMPLOYEER' },
+]
 
 const typeDefs = gql`
     type User {
@@ -27,9 +36,15 @@ const typeDefs = gql`
         name: String
         email: String
         phoneNumber: String
+        profile: Profile
+    }
+    type Profile {
+        id: Int
+        description: String
     }
     type Query {
-        user: User,
+        user(id: Int): User,
+        profiles: [Profile],
     }
 `;
 
@@ -37,11 +52,17 @@ const resolvers = {
     User: {
         phoneNumber(obj) {
             return obj.fixPhoneNumber;
+        },
+        profile(obj) {
+            return profiles.find(profile => profile.id === obj.id);
         }
     },
     Query: {
-        user() {
-            return db[0];
+        user(_, args) {
+            return db.find(user => user.id === args.id);
+        },
+        profiles() {
+            return profiles;
         }
     }
 }
