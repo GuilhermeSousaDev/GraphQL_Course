@@ -32,6 +32,11 @@ const db = {
 };
 
 const typeDefs = gql`
+    enum TypeProfile {
+        ADMIN
+        NORMAL
+        EMPLOYEER
+    }
     type User {
         id: ID
         name: String
@@ -41,7 +46,7 @@ const typeDefs = gql`
     }
     type Profile {
         id: Int
-        description: String
+        description: TypeProfile
     }
     type Query {
         user(id: Int): User,
