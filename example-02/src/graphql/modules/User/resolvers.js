@@ -13,8 +13,8 @@ module.exports = {
         users: () => db.users,
     },
     Mutation: {
-        createUser(_, args) {
-            const { email } = args;
+        createUser(_, { data }) {
+            const { email } = data;
 
             const usersExists = db.users.find((user) => user.email === email);
 
@@ -23,13 +23,26 @@ module.exports = {
             }
 
             const newUser = {
-                ...args,
+                ...data,
                 id: generateId(db.users),
                 profile_id: 2
             }
 
             db.users.push(newUser);
 
+            return newUser;
+        },
+        updateUser(_, { id, data }) {
+            const user = db.users.find(user => user.id === id);
+            const index = db.users.findIndex(user => user.id === id);
+
+            const newUser = {
+                ...user,
+                ...data,
+            }
+
+            db.users.splice(index, 1, newUser);
+            
             return newUser;
         }
     }
