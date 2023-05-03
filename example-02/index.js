@@ -7,7 +7,9 @@ const server = new ApolloServer({
     formatError: (err) => {
         if (err.message.startsWith('This User Already Exists')) {
             return err.message;
-        }
+        } 
+
+        return err;
     },
 });
 

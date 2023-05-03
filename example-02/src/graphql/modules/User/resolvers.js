@@ -42,8 +42,22 @@ module.exports = {
             }
 
             db.users.splice(index, 1, newUser);
-            
+
             return newUser;
+        },
+        deleteUser(_, { data: { id, email } }) {
+            return deleteUserFilter(id ? { id } : { email });
         }
     }
+}
+
+function deleteUserFilter(data) {
+    const key = Object.keys(data)[0];
+    const value = Object.values(data)[0];
+
+    const userDeleted = db.users.find((user) => user[key] === value);
+
+    db.users = db.users.filter((user) => user[key] !== value);
+
+    return !!userDeleted;
 }
