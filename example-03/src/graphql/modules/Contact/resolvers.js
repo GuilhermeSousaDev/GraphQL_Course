@@ -1,12 +1,10 @@
-const db = require('../../../db');
-
 module.exports = {
     Query: {
-        contacts: async () => await db("contacts"),
+        contacts: async (_, args, { UserService }) => await UserService.find(),
     },
     Mutation: {
-        createContact: async (_, { data }) => await db("contacts").insert(data, ['id']),
-        updateContact: async (_, { id, data }) => await db("contacts").where({ id }).update(data),
-        deleteContact: async (_, { id }) => await db("contacts").where({ id }).delete(),
+        createContact: async (_, { data }, { UserService }) => await UserService.create(data),
+        updateContact: async (_, { id, data }, { UserService }) => await UserService.update(id, data),
+        deleteContact: async (_, { id }, { UserService }) => await UserService.delete(id),
     }
 }

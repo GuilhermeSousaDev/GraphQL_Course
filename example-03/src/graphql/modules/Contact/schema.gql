@@ -14,7 +14,7 @@ type Query {
     contacts: [Contact]!
 }
 type Mutation {
-    createContact(data: ContactInput): Boolean
-    updateContact(id: Int!, data: ContactInput): Boolean
+    createContact(data: ContactInput): Contact
+    updateContact(id: Int!, data: ContactInput): Contact
     deleteContact(id: Int): Boolean
 }
