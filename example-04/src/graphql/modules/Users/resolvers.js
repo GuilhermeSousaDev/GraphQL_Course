@@ -1,7 +1,7 @@
 module.exports = {
     Query: {
-        user(_, { login }) {
-            return { login }
+        user(_, { login }, { dataSources }) {
+            return dataSources.githubService.getUser(login);
         }
     }
 }
