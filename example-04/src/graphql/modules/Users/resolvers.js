@@ -1,4 +1,9 @@
 module.exports = {
+    User: {
+        async tasks(user, {}, { dataSources }) {
+            return await dataSources.taskService.getTasks(user.id);
+        }
+    },
     Query: {
         async user(_, { login }, { dataSources }) {
             const foundedUser = await dataSources.userService.findUserByLogin(login);
