@@ -1,7 +1,7 @@
 module.exports = {
     User: {
         async tasks(user, {}, { dataSources }) {
-            return await dataSources.taskService.getTasks(user.id);
+            return await dataSources.taskService.find(user.id);
         }
     },
     Query: {

@@ -12,6 +12,13 @@ const server = new ApolloServer({
         userService: UserService,
         taskService: TaskService,
     }),
+    context: ({ req }) => {
+        const userId = req.headers.authorization;
+
+        return {
+            userId,
+        };
+    },
 });
 
 server.listen()
