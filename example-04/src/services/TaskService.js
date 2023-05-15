@@ -1,8 +1,19 @@
 const db = require('../db');
+const AppError = require('../errors/AppError');
 
 class TaskService {
     find(userId) {
         return db("tasks").where({ user_id: userId });
+    }
+
+    async findById(id) {
+        const task = await db("tasks").where({ id });
+
+        if (!task.length) {
+            throw new AppError('Task not Found');
+        }
+
+        return [...task][0];
     }
 
     create(userId, data) {

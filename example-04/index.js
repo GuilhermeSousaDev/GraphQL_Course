@@ -1,24 +1,10 @@
 const { ApolloServer } = require('apollo-server');
-const { typeDefs, resolvers } = require('./src/graphql');
-const GithubService = require('./src/services/GithubService');
-const UserService = require('./src/services/UserService');
-const TaskService = require('./src/services/TasksService');
+const graphql = require('./src/graphql');
+const config = require('./src/config');
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    dataSources: () => ({
-        githubService: GithubService,
-        userService: UserService,
-        taskService: TaskService,
-    }),
-    context: ({ req }) => {
-        const userId = req.headers.authorization;
-
-        return {
-            userId,
-        };
-    },
+    ...graphql,
+    ...config,
 });
 
 server.listen()
