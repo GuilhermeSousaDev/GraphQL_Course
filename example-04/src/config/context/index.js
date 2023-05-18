@@ -1,7 +1,18 @@
+const generator = require("../../helpers/generator");
+const AppError = require('../../errors/AppError');
+
 module.exports = ({ req }) => {
-    const userId = req.headers.authorization;
+    const token = req.headers.authorization;
 
     return {
-        userId,
+        validate() {
+            try {
+                const { id } = generator.verifyToken(token);
+
+                return id;
+            } catch (error) {
+                throw new AppError('You are not authenticated');
+            }
+        }
     };
 }

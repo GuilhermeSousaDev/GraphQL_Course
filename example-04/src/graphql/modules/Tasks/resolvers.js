@@ -1,6 +1,8 @@
 module.exports = {
     Query: {
-        async tasks(_, __, { dataSources, userId }) {
+        async tasks(_, __, { dataSources, validate }) {
+            const userId = validate();
+            console.log(userId);
             return await dataSources.taskService.find(userId);
         },
         async task(_, { id }, { dataSources }) {
