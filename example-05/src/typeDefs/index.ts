@@ -10,4 +10,17 @@ export default gql`
     type Query {
         users: [User]
     }
+
+    input UserInput {
+        name: String
+        email: String
+    }
+
+    type Mutation {
+        createUser(user: UserInput): User
+    }
+
+    type Subscription {
+        userAdded: User!
+    }
 `;

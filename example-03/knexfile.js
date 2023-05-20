@@ -6,8 +6,8 @@
 module.exports = {
   client: 'mysql',
   connection: {
-    database: 'crud',
-    user: 'root',
+    database: 'root',
+    user: '',
     password: ''
   },
   pool: {
