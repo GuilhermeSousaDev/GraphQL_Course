@@ -1,14 +1,22 @@
 import { useEffect, useState } from "react";
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { client } from './config/client-graphql';
+
+const GET_TASKS = gql`
+  query {
+    tasks {
+      id title description
+    }
+  }
+`;
 
 function App() {
   const [task, setTask] = useState();
-  const [tasks, setTasks] = useState([]);
+  const { loading, data: tasks } = useQuery(GET_TASKS);
 
   useEffect(() => {
     initial();
-  }, []);
+  }, [loading]);
 
   const initial = () => {
     client.query({
@@ -24,20 +32,6 @@ function App() {
     }).then(res => setTask(res.data.task));
   }
 
-  const handleListTasks = async () => {
-    const data = await client.query({
-      query: gql`
-        query {
-          tasks {
-            id title description
-          }
-        }
-      `,
-    });
-    
-    setTasks(data.data.tasks);
-  }
-
   return (
     <div>
       <h3>One Task with Id: 3</h3>
@@ -51,15 +45,16 @@ function App() {
       )}
       <br /> <br />
 
-      <button onClick={handleListTasks}>List Tasks</button>
       <h4>Tasks List</h4>
-      { tasks && tasks.map(task => (
-        <div key={task.id}>
-          <p>{ task.id }</p>
-          <p>{ task.title }</p>
-          <p>{ task.description }</p>
-        </div>
-      )) }
+      {
+        !loading ? tasks.tasks.map(task => (
+          <div key={task.id}>
+            <p>{ task.id }</p>
+            <p>{ task.title }</p>
+            <p>{ task.description }</p>
+          </div>
+        )) : '...Loading'
+      }
     </div>
   )
 }
